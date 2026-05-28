@@ -72,7 +72,31 @@ Escalate back to Codex/Claude when:
 
 ## Preferred MCP Worker
 
-If the `deepseek-code-worker` MCP tools are available, prefer them over raw shell calls.
+Prefer the native `reasonix` MCP worker when available. It calls `reasonix` directly and avoids the older Claude Code CLI wrapper path.
+
+Use the native async worker for normal tasks:
+
+```text
+reasonix_start_task
+```
+
+Then poll or collect results with:
+
+```text
+reasonix_wait_task
+reasonix_get_task
+reasonix_tail_task
+```
+
+Cancel only when the user asks or the task is obsolete:
+
+```text
+reasonix_cancel_task
+```
+
+Use `reasonix_start_task` with a complete task packet. Keep architecture, visual judgment, and final review in Codex/Claude. Use `reasonix_get_task` after the job reaches terminal state and inspect the output before accepting it.
+
+If only the older `deepseek-code-worker` MCP tools are available, prefer its async path over raw shell calls.
 
 Use the async worker for normal tasks:
 
@@ -94,7 +118,7 @@ Avoid the synchronous compatibility worker for anything that might take more tha
 deepseek_implement_in_workspace
 ```
 
-That synchronous tool is only for very small patches. It can hit the host tool-call timeout even when DeepSeek is healthy. For implementation work, start an async job, keep the host agent productive, then review the final diff.
+That synchronous tool is only for very small patches. It can hit the host tool-call timeout even when DeepSeek is healthy. For implementation work, start an async job, keep the host agent productive, then review the final result.
 
 Recommended MCP pattern:
 

@@ -24,6 +24,33 @@ Copy the skill folder into your Codex skills directory:
 cp -R dg-deepseek ~/.codex/skills/dg-deepseek
 ```
 
+## reasonix-native MCP
+
+This repo also includes a native MCP server that calls `reasonix` directly instead of routing through Claude Code CLI:
+
+```bash
+npm install
+npm run mcp:doctor
+```
+
+Codex config:
+
+```toml
+[mcp_servers.reasonix-native]
+command = "node"
+args = ["/absolute/path/to/dg-deepseek/reasonix-native-mcp/bin/reasonix-native-mcp.mjs"]
+```
+
+Tools exposed:
+
+- `reasonix_start_task`
+- `reasonix_wait_task`
+- `reasonix_get_task`
+- `reasonix_tail_task`
+- `reasonix_cancel_task`
+
+Use `reasonix_start_task` first. It returns a `job_id` immediately so Codex or Claude Code does not block on a long DeepSeek run.
+
 ## Core Idea
 
 DeepSeek does the labor. Codex and Claude Code keep the judgment.

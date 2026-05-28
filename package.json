@@ -1,0 +1,17 @@
+{
+  "name": "dg-deepseek",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Codex Skill and native reasonix MCP worker for delegating scoped work to DeepSeek.",
+  "bin": {
+    "reasonix-native-mcp": "./reasonix-native-mcp/bin/reasonix-native-mcp.mjs"
+  },
+  "scripts": {
+    "mcp:doctor": "node ./reasonix-native-mcp/bin/reasonix-native-mcp.mjs --doctor"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.76"
+  }
+}
