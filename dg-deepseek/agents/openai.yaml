@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delegate to DeepSeek"
+  short_description: "Route coding work between Codex/Claude and DeepSeek workers."
+  default_prompt: "Use this skill to split a software task into brain-work for Codex/Claude and execution work for DeepSeek via reasonix cli, then review the result."
