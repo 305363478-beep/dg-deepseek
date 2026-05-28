@@ -70,6 +70,40 @@ Escalate back to Codex/Claude when:
    - Report validation.
    - Name residual risk or skipped checks.
 
+## Preferred MCP Worker
+
+If the `deepseek-code-worker` MCP tools are available, prefer them over raw shell calls.
+
+Use the async worker for normal tasks:
+
+```text
+deepseek_start_implementation
+```
+
+Then poll or collect results with:
+
+```text
+deepseek_wait_for_job
+deepseek_get_job
+deepseek_tail_job
+```
+
+Avoid the synchronous compatibility worker for anything that might take more than a tiny edit:
+
+```text
+deepseek_implement_in_workspace
+```
+
+That synchronous tool is only for very small patches. It can hit the host tool-call timeout even when DeepSeek is healthy. For implementation work, start an async job, keep the host agent productive, then review the final diff.
+
+Recommended MCP pattern:
+
+1. Call `deepseek_start_implementation` with a narrow `cwd`, `task`, `allowed_dirs`, `checks`, and `worker_profile`.
+2. Keep the host agent responsible for planning and final review.
+3. Use `deepseek_wait_for_job` for a short observation window, not as the worker lifetime limit.
+4. Use `deepseek_get_job` with `include_diff: true` only at terminal state or final review.
+5. If the job is still running, report progress and continue local non-overlapping work.
+
 ## Task Packet Template
 
 Use this structure when calling DeepSeek:
@@ -109,6 +143,8 @@ Output:
 ```
 
 ## reasonix Usage
+
+Use raw `reasonix` only when MCP worker tools are unavailable.
 
 Prefer non-interactive execution for scoped tasks:
 
